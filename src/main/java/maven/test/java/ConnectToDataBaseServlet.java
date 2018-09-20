@@ -16,13 +16,21 @@ public class ConnectToDataBaseServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String url = "jdbc:mysql://localhost:3306";
+        String db = req.getParameter("db");
+        String sql = req.getParameter("sql");
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, "root", "root");
+            Connection connection = DriverManager.getConnection(url+db, "root", "root");
             Statement statement = connection.createStatement();
-            String sentencia = "CREATE DATABASE cice; USE cice; CREATE TABLE test (id INT AUTO_INCREMENT, titulo VARCHAR(255) NOT NULL, PRIMARY KEY (id))";
-            statement.execute(sentencia);
+            /*String s1 = "CREATE DATABASE cice";
+            String s2 = "USE cice";
+            String s3 = "CREATE TABLE test (id INT AUTO_INCREMENT, titulo VARCHAR(255) NOT NULL, PRIMARY KEY (id))";
+            statement.execute(s1);
+            statement.execute(s2);
+            statement.execute(s3); */
+
+            statement.execute(sql);
             statement.close();
             connection.close();
         } catch (ClassNotFoundException e) {
